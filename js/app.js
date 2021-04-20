@@ -15,9 +15,10 @@
 
 
 // Define Global Variables
-let lastId = 3;
+let lastId = 0;
 
 // calling main functions
+addMenu();
 goTop()
 secScroll();
 onTheMove();
@@ -39,19 +40,25 @@ function addSection() {
 </section>`
 
     document.getElementById('main').insertAdjacentHTML('beforeend', sectionHtml);
-    addMenu();
+    addSectionMenu();
     onTheMove();
 }
 
 //adding menu item function
 
 function addMenu() {
+    let ulHtml = `<ul id = "navbar__list"> </ul>`;
+    document.getElementById('navbar__menu').insertAdjacentHTML("afterbegin", ulHtml);
+
+}
+
+function addSectionMenu() {
     let menuHtml = `<li class="nav-item">
     <a class="menu__link" href="#section${lastId}" data-id='section${lastId}' id="${lastId}">section${lastId}</a>
  </li>`;
     document.getElementById('navbar__list').insertAdjacentHTML('beforeend', menuHtml);
-}
 
+}
 
 
 
@@ -98,12 +105,13 @@ function goTop() {
 function isInViewport(el) {
     const sectionRect = el.getBoundingClientRect();
     return (
-        sectionRect.top >= 0 &&
+        // sectionRect.top >= 0 &&
         sectionRect.left >= 0 &&
-        sectionRect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        sectionRect.bottom <= (document.documentElement.clientHeight) &&
         sectionRect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
 }
+
 
 // function that make section active when i'm scrolling
 function onTheMove() {
@@ -112,7 +120,7 @@ function onTheMove() {
         sections.forEach(function(section) {
             let state = isInViewport(section);
             if (state == true) {
-                active((section.id).charAt(7));
+                active((section.id).substring(section.id.indexOf('n') + 1));
                 activeSection(section.id);
             }
 
